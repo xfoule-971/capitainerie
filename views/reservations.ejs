@@ -1,0 +1,142 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Gestion des Réservations</h2>
+
+    <!-- BOUTON AJOUT -->
+    <div class="mb-3 text-end">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddReservation">
+            ➕ Ajouter une réservation
+        </button>
+    </div>
+
+    <!-- TABLE RÉSERVATIONS -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Client</th>
+                <th>Bateau</th>
+                <th>Catway</th>
+                <th>Début</th>
+                <th>Fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% if (!reservations || reservations.length === 0) { %>
+                <tr>
+                    <td colspan="7" class="text-center">Aucune réservation enregistrée</td>
+                </tr>
+            <% } else { %>
+                <% reservations.forEach((r, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= r.clientName %></td>
+                        <td><%= r.boatName %></td>
+                        <td><%= r.catwayId || r.catwayNumber %></td>
+                        <td><%= new Date(r.startDate).toLocaleDateString('fr-FR') %></td>
+                        <td><%= new Date(r.endDate).toLocaleDateString('fr-FR') %></td>
+                        <td>
+                            <!-- Bouton Edit -->
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditReservation<%= r._id %>">
+                                Modifier
+                            </button>
+
+                            <!-- Formulaire DELETE -->
+                            <form action="/reservations/<%= r._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Supprimer cette réservation ?')">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    <!-- MODAL EDIT -->
+                    <div class="modal fade" id="modalEditReservation<%= r._id %>" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form action="/reservations/<%= r._id %>?_method=PUT" method="POST" class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Modifier Réservation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label>Client</label>
+                                        <input type="text" name="clientName" class="form-control" value="<%= r.clientName %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Bateau</label>
+                                        <input type="text" name="boatName" class="form-control" value="<%= r.boatName %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Catway</label>
+                                        <input type="text" name="catwayId" class="form-control" value="<%= r.catwayId %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Date début</label>
+                                        <input type="date" name="startDate" class="form-control" value="<%= r.startDate.toISOString().split('T')[0] %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Date fin</label>
+                                        <input type="date" name="endDate" class="form-control" value="<%= r.endDate.toISOString().split('T')[0] %>" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </tbody>
+    </table>
+
+    <!-- MODAL ADD RÉSERVATION -->
+    <div class="modal fade" id="modalAddReservation" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="/reservations" method="POST" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter Réservation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Client</label>
+                        <input type="text" name="clientName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Bateau</label>
+                        <input type="text" name="boatName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Catway</label>
+                        <input type="text" name="catwayId" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Date début</label>
+                        <input type="date" name="startDate" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Date fin</label>
+                        <input type="date" name="endDate" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RETOUR DASHBOARD -->
+    <div class="mt-4 text-center">
+        <a href="/dashboard" class="btn btn-secondary">⬅ Retour au tableau de bord</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+

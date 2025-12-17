@@ -1,0 +1,123 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Gestion des Catways</h2>
+
+    <!-- BOUTON AJOUT -->
+    <div class="mb-3 text-end">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddCatway">
+            ➕ Ajouter un catway
+        </button>
+    </div>
+
+    <!-- TABLE CATWAYS -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Numéro</th>
+                <th>Type</th>
+                <th>État</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (!catways || catways.length === 0) { %>
+                <tr>
+                    <td colspan="5" class="text-center">Aucun catway enregistré</td>
+                </tr>
+            <% } else { %>
+                <% catways.forEach((catway, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= catway.catwayNumber %></td>
+                        <td><%= catway.catwayType %></td>
+                        <td><%= catway.catwayState %></td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditCatway<%= catway._id %>">
+                                Modifier
+                            </button>
+                            <form action="/catways/<%= catway._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce catway ?')">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    <!-- MODAL EDIT -->
+                    <div class="modal fade" id="modalEditCatway<%= catway._id %>" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form action="/catways/<%= catway._id %>?_method=PUT" method="POST" class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Modifier Catway</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label>Numéro</label>
+                                        <input type="number" name="catwayNumber" class="form-control" value="<%= catway.catwayNumber %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Type</label>
+                                        <input type="text" name="catwayType" class="form-control" value="<%= catway.catwayType %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>État</label>
+                                        <input type="text" name="catwayState" class="form-control" value="<%= catway.catwayState %>" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </tbody>
+    </table>
+
+    <!-- MODAL ADD CATWAY -->
+    <div class="modal fade" id="modalAddCatway" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="/catways" method="POST" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter Catway</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Numéro</label>
+                        <input type="number" name="catwayNumber" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Type</label>
+                        <input type="text" name="catwayType" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>État</label>
+                        <input type="text" name="catwayState" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RETOUR DASHBOARD -->
+    <div class="mt-4 text-center">
+        <a href="/dashboard" class="btn btn-secondary">⬅ Retour au tableau de bord</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+
+
+
+
+

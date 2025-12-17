@@ -1,0 +1,51 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+
+    <h2>Tableau de bord</h2>
+
+    <p class="text-muted">
+        Utilisateur connecté :
+        <strong><%= user.email %></strong>
+    </p>
+
+    <p>
+        Date du jour :
+        <strong><%= new Date().toLocaleDateString('fr-FR') %></strong>
+    </p>
+
+    <hr>
+
+    <h4>Réservations en cours</h4>
+
+    <% if (reservations.length === 0) { %>
+        <p>Aucune réservation en cours.</p>
+    <% } else { %>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Bateau</th>
+                    <th>Catway</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% reservations.forEach(r => { %>
+                    <tr>
+                        <td><%= r.clientName %></td>
+                        <td><%= r.boatName %></td>
+                        <td><%= r.catwayId || r.catwayNumber %></td>
+                        <td><%= new Date(r.startDate).toLocaleDateString('fr-FR') %></td>
+                        <td><%= new Date(r.endDate).toLocaleDateString('fr-FR') %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+
+</div>
+
+<%- include('partials/footer') %>

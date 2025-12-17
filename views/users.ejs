@@ -1,0 +1,115 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Gestion des Utilisateurs</h2>
+
+    <!-- BOUTON AJOUT -->
+    <div class="mb-3 text-end">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddUser">
+            ➕ Ajouter un utilisateur
+        </button>
+    </div>
+
+    <!-- TABLE UTILISATEURS -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Nom d'utilisateur</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (!users || users.length === 0) { %>
+                <tr>
+                    <td colspan="4" class="text-center">Aucun utilisateur enregistré</td>
+                </tr>
+            <% } else { %>
+                <% users.forEach((user, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= user.username %></td>
+                        <td><%= user.email %></td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditUser<%= user._id %>">
+                                Modifier
+                            </button>
+                            <form action="/users/<%= user._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    <!-- MODAL EDIT -->
+                    <div class="modal fade" id="modalEditUser<%= user._id %>" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form action="/users/<%= user._id %>?_method=PUT" method="POST" class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Modifier Utilisateur</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label>Nom d'utilisateur</label>
+                                        <input type="text" name="username" class="form-control" value="<%= user.username %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Email</label>
+                                        <input type="email" name="email" class="form-control" value="<%= user.email %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Mot de passe</label>
+                                        <input type="text" name="password" class="form-control" value="<%= user.password %>" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </tbody>
+    </table>
+
+    <!-- MODAL ADD USER -->
+    <div class="modal fade" id="modalAddUser" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="/users" method="POST" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter Utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Nom d'utilisateur</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Mot de passe</label>
+                        <input type="text" name="password" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RETOUR DASHBOARD -->
+    <div class="mt-4 text-center">
+        <a href="/dashboard" class="btn btn-secondary">⬅ Retour au tableau de bord</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
