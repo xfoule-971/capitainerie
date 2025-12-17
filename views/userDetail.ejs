@@ -1,0 +1,20 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Détail Utilisateur</h2>
+
+    <ul class="list-group mb-3">
+        <li class="list-group-item"><strong>Nom:</strong> <%= user.username %></li>
+        <li class="list-group-item"><strong>Email:</strong> <%= user.email %></li>
+        <li class="list-group-item"><strong>Mot de passe:</strong> <%= user.password %></li>
+    </ul>
+
+    <a href="/users/<%= user._id %>/edit" class="btn btn-warning">Modifier</a>
+    <form action="/users/<%= user._id %>?_method=DELETE" method="POST" style="display:inline;">
+        <button class="btn btn-danger" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</button>
+    </form>
+    <a href="/users" class="btn btn-secondary">⬅ Retour à la liste</a>
+</div>
+
+<%- include('partials/footer') %>

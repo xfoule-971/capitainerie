@@ -1,41 +1,58 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
-  <a class="navbar-brand text-uppercase text-light" href="/">Capitainerie Russel</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container-fluid d-flex align-items-center">
 
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarMain"
-    aria-controls="navbarMain"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
+        <!-- LOGO à gauche -->
+        <a class="navbar-brand text-uppercase text-light" href="/">
+            Capitainerie Russel
+        </a>
 
-  <div class="collapse navbar-collapse mx-5" id="navbarMain">
-    <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+        <!-- DIV qui prend tout l'espace entre logo et menu -->
+        <div class="flex-grow-1"></div>
 
-      <li class="nav-item mx-4">
-        <a class="nav-link text-light" href="/catways">Catways</a>
-      </li>
+        <!-- BOUTON BURGER -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMain"
+            aria-controls="navbarMain"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <li class="nav-item mx-4"> 
-        <a class="nav-link text-light" href="/reservations">Réservations</a>
-      </li>
+        <!-- MENU à droite -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarMain">
+            <ul class="navbar-nav align-items-center">
 
-      <li class="nav-item mx-4">
-        <a class="nav-link text-light" href="/users">Utilisateurs</a>
-      </li>
+                <li class="nav-item mx-5">
+                    <a class="nav-link text-light" href="/catways">Catways</a>
+                </li>
 
-      <li class="nav-item mx-4">
-        <a class="nav-link text-light" href="/api-docs">API</a>
-      </li>
+                <li class="nav-item mx-5">
+                    <a class="nav-link text-light" href="/reservations">Réservations</a>
+                </li>
 
-      <li class="nav-item">
-        <a class="nav-link text-danger" href="/logout">Déconnexion</a>
-      </li>
+                <li class="nav-item mx-5">
+                    <a class="nav-link text-light" href="/users">Utilisateurs</a>
+                </li>
 
-    </ul>
-  </div>
+                <li class="nav-item mx-5">
+                    <a class="nav-link text-light" href="/api-docs">API</a>
+                </li>
+
+                <li class="nav-item mx-5">
+                    <a class="nav-link btn btn-warning text-danger fw-bolder px-3" href="/logout">
+                        Déconnexion
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
 </nav>
+
+
+
+
