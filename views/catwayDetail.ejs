@@ -1,0 +1,30 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Détail Catway</h2>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Numéro</th>
+            <td><%= catway.catwayNumber %></td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td><%= catway.catwayType %></td>
+        </tr>
+        <tr>
+            <th>État</th>
+            <td><%= catway.catwayState %></td>
+        </tr>
+    </table>
+
+    <div class="mt-3 text-center">
+        <a href="/catways" class="btn btn-secondary">⬅ Retour à la liste</a>
+        <a href="/catways/<%= catway._id %>/edit" class="btn btn-warning">Modifier</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+

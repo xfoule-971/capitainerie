@@ -1,0 +1,34 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary"><%= user ? 'Modifier Utilisateur' : 'Ajouter Utilisateur' %></h2>
+
+    <form action="<%= user ? '/users/' + user._id : '/users' %>" method="POST">
+        <% if (user) { %>
+            <input type="hidden" name="_method" value="POST">
+        <% } %>
+
+        <div class="mb-3">
+            <label class="form-label">Nom</label>
+            <input type="text" name="username" class="form-control" value="<%= user ? user.username : '' %>" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" value="<%= user ? user.email : '' %>" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mot de passe</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary"><%= user ? 'Modifier' : 'Ajouter' %></button>
+        <a href="/users" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+
+<%- include('partials/footer') %>
+
+

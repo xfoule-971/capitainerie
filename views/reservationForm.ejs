@@ -1,0 +1,44 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary"><%= reservation ? 'Modifier Réservation' : 'Ajouter Réservation' %></h2>
+
+    <form action="<%= reservation ? '/reservations/' + reservation._id : '/reservations' %>" method="POST">
+        <% if (reservation) { %>
+            <input type="hidden" name="_method" value="POST">
+        <% } %>
+
+        <div class="mb-3">
+            <label class="form-label">Catway</label>
+            <input type="number" name="catwayNumber" class="form-control" value="<%= reservation ? reservation.catwayNumber : '' %>" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nom du client</label>
+            <input type="text" name="clientName" class="form-control" value="<%= reservation ? reservation.clientName : '' %>" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nom du bateau</label>
+            <input type="text" name="boatName" class="form-control" value="<%= reservation ? reservation.boatName : '' %>" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Date de début</label>
+            <input type="date" name="startDate" class="form-control" value="<%= reservation ? reservation.startDate.toISOString().split('T')[0] : '' %>" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Date de fin</label>
+            <input type="date" name="endDate" class="form-control" value="<%= reservation ? reservation.endDate.toISOString().split('T')[0] : '' %>" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary"><%= reservation ? 'Modifier' : 'Ajouter' %></button>
+        <a href="/reservations" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+
+<%- include('partials/footer') %>
+
+

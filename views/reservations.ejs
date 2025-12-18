@@ -1,0 +1,60 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Gestion des Réservations</h2>
+
+    <div class="mb-3 text-end">
+        <a href="/reservations/new" class="btn btn-success">➕ Ajouter une réservation</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Catway</th>
+                <th>Client</th>
+                <th>Bateau</th>
+                <th>Début</th>
+                <th>Fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (!reservations || reservations.length === 0) { %>
+                <tr>
+                    <td colspan="7" class="text-center">Aucune réservation</td>
+                </tr>
+            <% } else { %>
+                <% reservations.forEach((resv, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= resv.catwayNumber %></td>
+                        <td><%= resv.clientName %></td>
+                        <td><%= resv.boatName %></td>
+                        <td><%= new Date(resv.startDate).toLocaleDateString() %></td>
+                        <td><%= new Date(resv.endDate).toLocaleDateString() %></td>
+                        <td>
+                            <a href="/reservations/<%= resv._id %>" class="btn btn-sm btn-primary">Voir</a>
+                            <a href="/reservations/<%= resv._id %>/edit" class="btn btn-sm btn-warning">Modifier</a>
+                            <form action="/reservations/<%= resv._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Supprimer cette réservation ?')">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } %>
+        </tbody>
+    </table>
+
+    <div class="mt-4 text-center">
+        <a href="/dashboard" class="btn btn-secondary">⬅ Retour au tableau de bord</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+
+
+
+

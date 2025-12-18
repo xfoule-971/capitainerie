@@ -4,6 +4,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const session = require('express-session');
+
 const { initClientConnection } = require('./db/mongo');
 
 const swaggerUi = require('swagger-ui-express');
@@ -41,6 +43,18 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ===============================
+// Sessions (OBLIGATOIRE POUR LOGIN)
+// ===============================
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'russel-secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true
+    }
+}));
+
+// ===============================
 // Swagger
 // ===============================
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -55,7 +69,7 @@ app.use('/', indexRouter);
 // ===============================
 app.use((req, res) => {
     res.status(404).render('index', {
-        title: 'Page introuvable'
+        error: 'Page introuvable'
     });
 });
 
@@ -64,14 +78,17 @@ app.use((req, res) => {
 // ===============================
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(err.status || 500).send('Erreur serveur');
+    res.status(err.status || 500).render('index', {
+        error: 'Erreur serveur'
+    });
 });
 
 // ===============================
 // LANCEMENT DU SERVEUR
 // ===============================
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Serveur lancé sur http://localhost:${PORT}`);
 });
+

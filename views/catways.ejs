@@ -1,0 +1,60 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Gestion des Catways</h2>
+
+    <div class="mb-3 text-end">
+        <a href="/catways/new" class="btn btn-success">➕ Ajouter un catway</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Numéro</th>
+                <th>Type</th>
+                <th>État</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (!catways || catways.length === 0) { %>
+                <tr>
+                    <td colspan="5" class="text-center">Aucun catway enregistré</td>
+                </tr>
+            <% } else { %>
+                <% catways.forEach((catway, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= catway.catwayNumber %></td>
+                        <td><%= catway.catwayType %></td>
+                        <td><%= catway.catwayState %></td>
+                        <td>
+                            <a href="/catways/<%= catway._id %>" class="btn btn-sm btn-primary">Voir</a>
+                            <a href="/catways/<%= catway._id %>/edit" class="btn btn-sm btn-warning">Modifier</a>
+                            <form action="/catways/<%= catway._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce catway ?')">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } %>
+        </tbody>
+    </table>
+
+    <div class="mt-4 text-center">
+        <a href="/dashboard" class="btn btn-secondary">⬅ Retour au tableau de bord</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+
+
+
+
+
+
+
+

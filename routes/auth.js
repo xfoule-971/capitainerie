@@ -16,12 +16,12 @@ const jwt = require('jsonwebtoken');
  * /login:
  *   post:
  *     summary: Connexion utilisateur
- *     description: Authentifie un utilisateur et retourne un token JWT
+ *     description: Authentifie un utilisateur et le redirige vers le tableau de bord
  *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         application/x-www-form-urlencoded:
  *           schema:
  *             type: object
  *             required:
@@ -35,15 +35,17 @@ const jwt = require('jsonwebtoken');
  *                 type: string
  *                 example: password123
  *     responses:
- *       200:
- *         description: Connexion réussie – token JWT retourné
+ *       302:
+ *         description: Redirection vers /dashboard
  *       401:
  *         description: Email ou mot de passe incorrect
  *       500:
  *         description: Erreur serveur
  */
 
-// Gestion de la connexion
+// ===============================
+// CONNEXION
+// ===============================
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -51,13 +53,19 @@ router.post('/login', async (req, res) => {
         // Vérification utilisateur
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
+            return res.status(401).render('index', {
+                title: 'Accueil',
+                error: 'Email ou mot de passe incorrect'
+            });
         }
 
         // Vérification mot de passe
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
+            return res.status(401).render('index', {
+                title: 'Accueil',
+                error: 'Email ou mot de passe incorrect'
+            });
         }
 
         // Création token JWT
@@ -67,9 +75,21 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.status(200).json({ token });
+        // Stockage du token en cookie (simple et efficace)
+        res.cookie('token', token, {
+            httpOnly: true,
+            maxAge: 3600000
+        });
+
+        // ✅ Redirection vers le dashboard
+        res.redirect('/dashboard');
+
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(500).render('index', {
+            title: 'Accueil',
+            error: 'Erreur serveur'
+        });
     }
 });
 
@@ -78,18 +98,21 @@ router.post('/login', async (req, res) => {
  * /logout:
  *   get:
  *     summary: Déconnexion utilisateur
- *     description: Déconnexion côté client (JWT stateless)
+ *     description: Supprime le cookie JWT et redirige vers l’accueil
  *     tags: [Auth]
  *     responses:
- *       200:
- *         description: Déconnexion réussie
+ *       302:
+ *         description: Redirection vers /
  */
 
-// Gestion de la déconnexion
+// ===============================
+// DÉCONNEXION
+// ===============================
 router.get('/logout', (req, res) => {
-    // En JWT stateless, logout = suppression côté client
-    res.status(200).json({ message: 'Déconnexion réussie' });
+    res.clearCookie('token');
+    res.redirect('/');
 });
 
 module.exports = router;
+
 

@@ -1,0 +1,38 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Détail Réservation</h2>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Catway</th>
+            <td><%= reservation.catwayNumber %></td>
+        </tr>
+        <tr>
+            <th>Client</th>
+            <td><%= reservation.clientName %></td>
+        </tr>
+        <tr>
+            <th>Bateau</th>
+            <td><%= reservation.boatName %></td>
+        </tr>
+        <tr>
+            <th>Début</th>
+            <td><%= new Date(reservation.startDate).toLocaleDateString() %></td>
+        </tr>
+        <tr>
+            <th>Fin</th>
+            <td><%= new Date(reservation.endDate).toLocaleDateString() %></td>
+        </tr>
+    </table>
+
+    <div class="mt-3 text-center">
+        <a href="/reservations" class="btn btn-secondary">⬅ Retour à la liste</a>
+        <a href="/reservations/<%= reservation._id %>/edit" class="btn btn-warning">Modifier</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+
